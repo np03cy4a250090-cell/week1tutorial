@@ -1,3 +1,51 @@
+<?php
+require_once 'functions.php';
+require_once 'functions.php';
+
+$featuredCourses = [
+    [
+        "title" => "Web Development",
+        "description" => "Learn the fundamentals of HTML, CSS, and creating beautiful websites.",
+        "image" => "https://images.unsplash.com/photo-1515879218367-8466d910aaa4?auto=format&fit=crop&w=800&q=80",
+        "alt" => "Programming code displayed on a computer screen",
+        "link" => "https://developer.mozilla.org/en-US/docs/Web",
+        "category" => [
+            "Name" => "Technology",
+            "Level" => "Beginner",
+            "Length" => 6
+        ]
+    ],
+    [
+        "title" => "Python Programming",
+        "description" => "Explore programming concepts, logic, and beginner-friendly Python.",
+        "image" => "https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?auto=format&fit=crop&w=800&q=80",
+        "alt" => "Computer screen displaying programming code",
+        "link" => "https://www.python.org/about/gettingstarted/",
+        "category" => [
+            "Name" => "Programming",
+            "Level" => "Beginner",
+            "Length" => 7
+        ]
+    ],
+    [
+        "title" => "Study Skills",
+        "description" => "Improve time management, concentration, and academic productivity.",
+        "image" => "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=800&q=80",
+        "alt" => "Notebook and laptop on a desk",
+        "link" => "https://www.purdue.edu/asc/resources/",
+        "category" => [
+            "Name" => "Productivity",
+            "Level" => "Intermediate",
+            "Length" => 6
+        ]
+    ]
+];
+
+$beginnerCourses = getCoursesByLevel($featuredCourses, "Beginner");
+$courseSummaries = getCourseSummaries($featuredCourses);
+$totalWeeks = getTotalWeeks($featuredCourses);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -70,38 +118,58 @@
             </div>
 
             <div class="course-grid">
-
-                <article class="course-card">
-                    <img src="https://images.unsplash.com/photo-1515879218367-8466d910aaa4?auto=format&fit=crop&w=800&q=80" alt="Programming code displayed on a computer screen">
-                    <div class="course-content">
-                        <span class="course-tag">Technology</span>
-                        <h3>Web Development</h3>
-                        <p>Learn the fundamentals of HTML, CSS, and creating beautiful websites.</p>
-                        <a href="https://developer.mozilla.org/en-US/docs/Web" target="_blank" rel="noopener noreferrer">Start Learning →</a>
-                    </div>
-                </article>
-
-                <article class="course-card">
-                    <img src="https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?auto=format&fit=crop&w=800&q=80" alt="Computer screen displaying programming code">
-                    <div class="course-content">
-                        <span class="course-tag">Programming</span>
-                        <h3>Python Programming</h3>
-                        <p>Explore programming concepts, logic, and beginner-friendly Python.</p>
-                        <a href="https://www.python.org/about/gettingstarted/" target="_blank" rel="noopener noreferrer">Start Learning →</a>
-                    </div>
-                </article>
-
-                <article class="course-card">
-                    <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=800&q=80" alt="Notebook and laptop on a desk">
-                    <div class="course-content">
-                        <span class="course-tag">Productivity</span>
-                        <h3>Study Skills</h3>
-                        <p>Improve time management, concentration, and academic productivity.</p>
-                        <a href="https://www.purdue.edu/asc/resources/" target="_blank" rel="noopener noreferrer">Start Learning →</a>
-                    </div>
-                </article>
-
+                <?php foreach ($featuredCourses as $course): ?>
+                    <article class="course-card">
+                        <img src="<?= htmlspecialchars($course["image"]) ?>" alt="<?= htmlspecialchars($course["alt"]) ?>">
+                        <div class="course-content">
+                            <span class="course-tag"><?= htmlspecialchars($course["category"]["Name"]) ?></span>
+                            <h3><?= htmlspecialchars($course["title"]) ?></h3>
+                            <p><?= htmlspecialchars($course["description"]) ?></p>
+                            <p><?= htmlspecialchars($course["category"]["Level"]) ?> | <?= formatDuration($course["category"]["Length"]) ?></p>
+                            <a href="<?= htmlspecialchars($course["link"]) ?>" target="_blank" rel="noopener noreferrer">Start Learning →</a>
+                        </div>
+                    </article>
+                <?php endforeach; ?>
             </div>
+        </section>
+
+        <section class="courses section-container">
+            <div class="section-heading">
+                <span class="eyebrow">Start from the basics</span>
+                <h2>Beginner Courses</h2>
+                <p>Explore courses suitable for beginners.</p>
+            </div>
+
+            <div class="course-grid">
+                <?php foreach ($beginnerCourses as $course): ?>
+                    <article class="course-card">
+                        <img src="<?= htmlspecialchars($course["image"]) ?>" alt="<?= htmlspecialchars($course["alt"]) ?>">
+                        <div class="course-content">
+                            <span class="course-tag"><?= htmlspecialchars($course["category"]["Name"]) ?></span>
+                            <h3><?= htmlspecialchars($course["title"]) ?></h3>
+                            <p><?= htmlspecialchars($course["description"]) ?></p>
+                            <p><?= htmlspecialchars($course["category"]["Level"]) ?> | <?= formatDuration($course["category"]["Length"]) ?></p>
+                            <a href="<?= htmlspecialchars($course["link"]) ?>" target="_blank" rel="noopener noreferrer">Start Learning →</a>
+                        </div>
+                    </article>
+                <?php endforeach; ?>
+            </div>
+        </section>
+
+        <section class="resources section-container">
+            <div class="section-heading">
+                <span class="eyebrow">Course overview</span>
+                <h2>Course at a Glance</h2>
+                <p>See all courses and their study durations.</p>
+            </div>
+
+            <ul>
+                <?php foreach ($courseSummaries as $summary): ?>
+                    <li><?= htmlspecialchars($summary) ?></li>
+                <?php endforeach; ?>
+            </ul>
+
+            <p>Total study time: <?= $totalWeeks ?> weeks</p>
         </section>
 
         <section class="resources section-container" id="resources">
